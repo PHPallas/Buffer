@@ -1,6 +1,6 @@
 {
     "name": "phpallas/buffer",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
         {
             "name": "Sina Kuhestani",
@@ -12,7 +12,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Phpallas\\Buffer\\": "src/"
+            "PHPallas\\Buffer\\": "src/"
         }
     },
     "minimum-stability": "stable",
