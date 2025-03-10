@@ -7,7 +7,7 @@
             "email": "sinakuhestani@gmail.com"
         }
     ],
-    "description": "A Stock to keep variables and function and use it inside a pipiline system",
+    "description": "A Stock to keep variables and function and use them inside a pipiline system",
     "type": "library",
     "license": "MIT",
     "autoload": {
