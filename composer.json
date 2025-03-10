@@ -1,0 +1,26 @@
+{
+    "name": "phpallas/buffer",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Sina Kuhestani",
+            "email": "sinakuhestani@gmail.com"
+        }
+    ],
+    "description": "A Stock to keep variables and function and use it inside a pipiline system",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Phpallas\\Buffer\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^11"
+    },
+    "require" : {
+        "phpallas/utilities": ">=1.0",
+        "php": ">=8.0"
+    }
+}
