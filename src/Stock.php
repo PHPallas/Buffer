@@ -1,49 +1,68 @@
 <?php
 
-declare(strict_types= 1);
+/*
+ * This file is part of the PHPallas package.
+ *
+ * (c) Sina Kuhestani <sinakuhestani@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
 
 namespace PHPallas\Buffer;
 
 use PHPallas\Utilities\ArrayUtility;
+use PHPallas\Utilities\StringUtility;
 
-class Stock
+/**
+ * Summary of Stock
+ */
+final class Stock
 {
-    private static ? Stock $instance = NULL;
+    private const separator = ".";
+
+    private static ?Stock $instance = NULL;
+
     private array $data = [];
-    private array $helpers = [];
-    private function __construct ()
+
+    private function __construct()
     {
     }
-    public static function getInstance (): static
+
+    public static function getInstance(): static
     {
-        if ( TRUE === is_null (static::$instance)) {
-            static::$instance = new static ();
+        if (null === static::$instance) {
+            static::$instance = new static();
         }
         return static::$instance;
     }
-    public function get ( string $name ): mixed
+
+    public function get(string $name, string $scope = "main"): mixed
     {
-        return ArrayUtility::get ( $this -> data, $name );
+        return ArrayUtility::get(
+            $this->data, 
+            static::scopeKey($scope) . static::separator . $name
+        );
     }
-    public function set ( string $name, mixed $value )
+
+    public function set(string $name, mixed $value, string $scope = "main")
     {
-        ArrayUtility::set ($this -> data, $name, $value );
+        ArrayUtility::set(
+            $this->data, 
+            static::scopeKey($scope) . static::separator . $name, 
+            $value
+        );
     }
-    public function register ( string $name, callable $function )
+
+    public function clearAll(): void
     {
-        $this -> helpers [ $name ] = $function;
+        $this->data = [];
     }
-    public function unregister ( string $name ): void
+
+    private static function scopeKey(string $scope): string
     {
-        if ( TRUE === isset ( $this -> helpers [ $name ] ) ) {
-            unset ( $this -> helpers [ $name ] );
-        }
-    }
-    public function __call ( $method, $args = [] ): mixed
-    {
-        if ( TRUE === isset ( $this -> helpers [ $method ] ) ) {
-            return call_user_func ( $this -> helpers [ $method ], $args );
-        }
-        return NULL;
+        return "scope_" . sha1($scope);
     }
 }
