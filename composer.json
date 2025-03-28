@@ -1,6 +1,6 @@
 {
     "name": "phpallas/buffer",
-    "version": "1.0.2",
+    "version": "1.2.0",
     "authors": [
         {
             "name": "Sina Kuhestani",
@@ -21,6 +21,6 @@
     },
     "require" : {
         "phpallas/utilities": ">=1.0",
-        "php": ">=8.0"
+        "php": ">=5.3"
     }
 }

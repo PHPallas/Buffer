@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d36d55420c55ff69ea2920613aa4003",
+    "content-hash": "4cea87b0a605ecf1a896caf2f6a3096b",
     "packages": [
         {
             "name": "phpallas/utilities",
-            "version": "1.1.0",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPallas/Utilities.git",
-                "reference": "3c5ca9db77064fb9b0966942fe4d76152bcfd491"
+                "reference": "e0d5c3c15009d12732f2bbc77c30ceb4015b6a4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPallas/Utilities/zipball/3c5ca9db77064fb9b0966942fe4d76152bcfd491",
-                "reference": "3c5ca9db77064fb9b0966942fe4d76152bcfd491",
+                "url": "https://api.github.com/repos/PHPallas/Utilities/zipball/e0d5c3c15009d12732f2bbc77c30ceb4015b6a4d",
+                "reference": "e0d5c3c15009d12732f2bbc77c30ceb4015b6a4d",
                 "shasum": ""
             },
             "require": {
@@ -45,9 +45,9 @@
             "description": "Utility Library for PHP projects",
             "support": {
                 "issues": "https://github.com/PHPallas/Utilities/issues",
-                "source": "https://github.com/PHPallas/Utilities/tree/v1.1.0"
+                "source": "https://github.com/PHPallas/Utilities/tree/v1.2.2"
             },
-            "time": "2025-03-21T20:06:57+00:00"
+            "time": "2025-03-28T01:34:49+00:00"
         }
     ],
     "packages-dev": [
@@ -1746,7 +1746,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0"
+        "php": ">=5.3"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
