@@ -9,59 +9,109 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
 namespace PHPallas\Buffer;
 
 use PHPallas\Utilities\ArrayUtility;
-use PHPallas\Utilities\StringUtility;
 
 /**
- * Summary of Stock
+ * Class Stock
+ *
+ * This class implements a singleton pattern to manage a collection of data
+ * associated with different scopes. It allows for setting, getting, and clearing
+ * data entries.
+ *
+ * @package PHPallas\Buffer
  */
 final class Stock
 {
-    private const separator = ".";
+    /**
+     * Separator used in the scope key.
+     *
+     * @var string
+     */
+    const separator = ".";
 
-    private static ?Stock $instance = NULL;
+    /**
+     * The single instance of the Stock class.
+     *
+     * @var Stock|null
+     */
+    private static $instance = NULL;
 
-    private array $data = [];
+    /**
+     * Array to hold data entries.
+     *
+     * @var array
+     */
+    private $data = [];
 
+    /**
+     * Stock constructor is private to prevent direct instantiation.
+     */
     private function __construct()
     {
     }
 
-    public static function getInstance(): static
+    /**
+     * Gets the singleton instance of the Stock class.
+     *
+     * @return Stock The instance of the Stock class.
+     */
+    public static function getInstance()
     {
-        if (null === static::$instance) {
+        if (null === static::$instance)
+        {
             static::$instance = new static();
         }
         return static::$instance;
     }
 
-    public function get(string $name, string $scope = "main"): mixed
+    /**
+     * Retrieves a value from the data array based on the name and scope.
+     *
+     * @param string $name The name of the entry to retrieve.
+     * @param string $scope The scope under which the entry is stored (default is "main").
+     * @return mixed|null Returns the value associated with the name and scope, or null if not found.
+     */
+    public function get($name, $scope = "main")
     {
         return ArrayUtility::get(
-            $this->data, 
+            $this->data,
             static::scopeKey($scope) . static::separator . $name
         );
     }
 
-    public function set(string $name, mixed $value, string $scope = "main")
+    /**
+     * Sets a value in the data array under the specified name and scope.
+     *
+     * @param string $name The name of the entry to set.
+     * @param mixed $value The value to store.
+     * @param string $scope The scope under which to store the entry (default is "main").
+     */
+    public function set($name, $value, $scope = "main")
     {
         ArrayUtility::set(
-            $this->data, 
-            static::scopeKey($scope) . static::separator . $name, 
+            $this->data,
+            static::scopeKey($scope) . static::separator . $name,
             $value
         );
     }
 
-    public function clearAll(): void
+    /**
+     * Clears all entries from the data array.
+     */
+    public function clearAll()
     {
         $this->data = [];
     }
 
-    private static function scopeKey(string $scope): string
+    /**
+     * Generates a unique scope key based on the provided scope string.
+     *
+     * @param string $scope The scope string to hash.
+     * @return string The generated scope key.
+     */
+    private static function scopeKey($scope)
     {
         return "scope_" . sha1($scope);
     }
