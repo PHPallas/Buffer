@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 
 declare(strict_types=1);
@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BufferTest extends TestCase
 {
-    public function testIfBufferIsSingleton(): void
+    public function testIfBufferIsSingleton()
     {
         $buffer = Buffer::getInstance();
         $buffer->set("test", "value");
@@ -16,7 +16,7 @@ final class BufferTest extends TestCase
         $this->assertEquals($buffer, Buffer::getInstance());
     }
 
-    public function testIfBufferWithoutScoping(): void
+    public function testIfBufferWithoutScoping()
     {
         $buffer = Buffer::getInstance();
         $buffer->set("parent.child.name", "John");
@@ -26,7 +26,7 @@ final class BufferTest extends TestCase
         $buffer->clearAll();
     }
 
-    public function testIfBufferWithScoping(): void
+    public function testIfBufferWithScoping()
     {
         $buffer = Buffer::getInstance();
         $buffer->set("morder.name", "John", "fantacy");
@@ -36,5 +36,14 @@ final class BufferTest extends TestCase
         $buffer->clearAll();
     }
 
-    
+    public function testUnsetMethod()
+    {
+        $buffer = Buffer::getInstance();
+        $buffer->set("morder.name", "John", "fantacy");
+        $buffer->set("morder.age", 28, "fantacy");
+        $this->assertEquals(["name" => "John", "age" => 28], $buffer->get("morder", "fantacy"));
+        $buffer->unset("morder.age","fantacy");
+        $this->assertEquals(["name" => "John"], $buffer->get("morder", "fantacy"));
+    }
+
 }

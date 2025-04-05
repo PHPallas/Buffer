@@ -98,6 +98,18 @@ final class Stock
     }
 
     /**
+     * Drops an item from buffer
+     * @param string $name
+     * @param string $scope
+     * @return void
+     */
+    public function unset($name, $scope = "main")
+    {
+        $key = static::scopeKey($scope) . static::separator . $name;
+        ArrayUtility::dropKey($this->data, $key);
+    }
+
+    /**
      * Clears all entries from the data array.
      */
     public function clearAll()
