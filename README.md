@@ -44,6 +44,13 @@ $buffer -> get("page.title.subTitle"); // => awsome title
 $buffer -> get("page.title"); // => ["title" => "great", "subTitle" => "awsome title", "separator" => "|"]
 ```
 
+5. **Unset Varianle**: you can use a dot notation to unset variables. For example:
+
+```
+$buffer -> unset("page.title");
+```
+
+
 ## Feature Request
 
 If you need a feature that is missing from my package just [create an isset](https://github.com/PHPallas/Buffer/issues). 
