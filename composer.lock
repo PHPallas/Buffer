@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4cea87b0a605ecf1a896caf2f6a3096b",
+    "content-hash": "0bda698bc07e6fc7f2b7da450601d212",
     "packages": [
         {
             "name": "phpallas/utilities",
