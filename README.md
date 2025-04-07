@@ -1,64 +1,73 @@
 # Buffer
 
-A Stock to keep variables and function and use them inside a pipiline system. This package is originally created to work alongside various packages by PHPallas Team. However, it is possible to use it anywhere you need a buffer object to keep your variables and functions available across steps of a pipeline.
+A stock to keep variables and functions and use them inside a pipeline system. This package was originally created to work alongside various packages by the PHPallas Team. However, it can be used anywhere you need a buffer object to keep your variables and functions available across steps of a pipeline.
 
-## How to
+## How to Use
 
-1. **Install `phpallas/buffer`**: by using composer you can install it on your package as below:
+1. **Install `phpallas/buffer`**: You can install it in your project using Composer as follows:
 
-```
-composer require phpallas/buffer
-```
+   ```
+   composer require phpallas/buffer
+   ```
 
-This will install latest version of package.
+   This will install the latest version of the package.
 
-2. **Get an instant**: `buffer` is a singleton so inside and part ot your program get the instant as following method:
+2. **Get an Instance**: `Buffer` is a singleton, so to get the instance in any part of your program, use the following method:
 
-```
-use PHPallas\Buffer\Stock as Buffer;
+   ```php
+   use PHPallas\Buffer\Stock as Buffer;
 
-$buffer = Buffer::getInstance();
-```
+   $buffer = Buffer::getInstance();
+   ```
 
-3. **Set variable**: you can set a variable as below
+3. **Set a Variable**: You can set a variable as shown below:
 
-```
-use PHPallas\Buffer\Stock as Buffer;
+   ```php
+   use PHPallas\Buffer\Stock as Buffer;
 
-$buffer = Buffer::set("namespace.name", "value here");
-```
+   $buffer->set("namespace.name", "value here");
+   ```
 
-where the name of variable MAY include some namespaces using a dot notation, for example `vars.page.title`, `tables.main.headers`, etc.
+   The name of the variable may include namespaces using dot notation, for example, `vars.page.title`, `tables.main.headers`, etc.
 
-4. **Get variable**: you can use a dot notation to get variable value. For example if you set an array as below:
+4. **Get a Variable**: You can use dot notation to get the variable value. For example, if you set an array as follows:
 
-```
-$buffer -> set("page.title", ["title" => "great", "subTitle" => "awsome title", "separator" => "|"]);
-```
+   ```php
+   $buffer->set("page.title", ["title" => "great", "subTitle" => "awesome title", "separator" => "|"]);
+   ```
 
-then:
+   Then:
 
-```
-$buffer -> get("page.title.title"); // => gerat
-$buffer -> get("page.title.subTitle"); // => awsome title
-$buffer -> get("page.title"); // => ["title" => "great", "subTitle" => "awsome title", "separator" => "|"]
-```
+   ```php
+   $buffer->get("page.title.title"); // => great
+   $buffer->get("page.title.subTitle"); // => awesome title
+   $buffer->get("page.title"); // => ["title" => "great", "subTitle" => "awesome title", "separator" => "|"]
+   ```
 
-5. **Unset Varianle**: you can use a dot notation to unset variables. For example:
+5. **Unset a Variable**: You can use dot notation to unset variables. For example:
 
-```
-$buffer -> unset("page.title");
-```
+   ```php
+   $buffer->unset("page.title");
+   ```
+
+6. **Attach an Observer**: It is possible to attach observers to watch buffer elements and get notified if a change occurs.
+
+For example:
+
+   ```php
+   $buffer->attach("page.title", $observer, "main");
+   ```
+Now, by any changes in `page.title`, `$observer` will be notified throughout `notify($scope, $name, $oldValue, $value)` method of `$observer`.
 
 
 ## Feature Request
 
-If you need a feature that is missing from my package just [create an isset](https://github.com/PHPallas/Buffer/issues). 
+If you need a feature that is missing from this package, just [create an issue](https://github.com/PHPallas/Buffer/issues).
 
 ## Contribution
 
-All types of contributions (development, test, translation) are welcome! you can contribute on this package and make it better and more usable.
+All types of contributions (development, testing, translation) are welcome! You can contribute to this package to make it better and more usable.
 
 ## License
 
-This package is licenced under [MIT](https://github.com/PHPallas/Buffer#MIT-1-ov-file).
+This package is licensed under the [MIT License](https://github.com/PHPallas/Buffer#MIT-1-ov-file).

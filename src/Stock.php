@@ -46,6 +46,13 @@ final class Stock
     private $data = [];
 
     /**
+     * Array to hold observers.
+     *
+     * @var array
+     */
+    private $observers = [];
+
+    /**
      * Stock constructor is private to prevent direct instantiation.
      */
     private function __construct()
@@ -90,11 +97,42 @@ final class Stock
      */
     public function set($name, $value, $scope = "main")
     {
+        $data = $this->data;
+        $k = static::scopeKey($scope) . static::separator . $name;
         ArrayUtility::set(
             $this->data,
-            static::scopeKey($scope) . static::separator . $name,
+            $k,
             $value
         );
+        $oldValue = ArrayUtility::get($data, $k);
+        $key = sha1($scope . static::separator . $name);
+        if ($data !== $oldValue)
+        {
+            $observers = $this->observers;
+            $cObervers = ArrayUtility::get($observers, $key, []);
+            foreach ($cObervers as $cOberver)
+            {
+                if (method_exists($cOberver, "notify")) {
+                    $cOberver->notify($scope, $name, $oldValue, $value);
+                }
+            }
+        }
+    }
+
+    public function attachObserver($name, $observer, $scope)
+    {
+        $key = sha1($scope . static::separator . $name);
+        $observers = ArrayUtility::get($this->observers, $key, []);
+        $observers = ArrayUtility::merge($observers, [$observer]);
+        ArrayUtility::set($this->observers, $key, array_unique($observers));
+    }
+
+    public function detachObserver ($name, $observer, $scope)
+    {
+        $key = sha1($scope . static::separator . $name);
+        $observers = ArrayUtility::get($this->observers, $key, []);
+        $observers = ArrayUtility::drop($observers, $observer);
+        ArrayUtility::set($this->observers, $key, $observers);
     }
 
     /**
@@ -107,6 +145,9 @@ final class Stock
     {
         $key = static::scopeKey($scope) . static::separator . $name;
         ArrayUtility::dropKey($this->data, $key);
+
+        $key = sha1($scope . static::separator . $name);
+        ArrayUtility::dropKey($this->observers, $key);
     }
 
     /**
@@ -115,6 +156,7 @@ final class Stock
     public function clearAll()
     {
         $this->data = [];
+        $this->observers = [];
     }
 
     /**
