@@ -105,17 +105,27 @@ final class Stock
             $value
         );
         $oldValue = ArrayUtility::get($data, $k);
-        $key = sha1($scope . static::separator . $name);
         if ($data !== $oldValue)
         {
-            $observers = $this->observers;
-            $cObervers = ArrayUtility::get($observers, $key, []);
-            foreach ($cObervers as $cOberver)
+            $path = $scope . static::separator . $name;
+            $pathArray = explode(static::separator, $path);
+            while (0 < count($pathArray))
             {
-                if (method_exists($cOberver, "notify")) {
-                    $cOberver->notify($scope, $name, $oldValue, $value);
+                $path = implode(static::separator, $pathArray);
+                $key = sha1($path);
+                $observers = $this->observers;
+                $cObervers = ArrayUtility::get($observers, $key, []);
+                foreach ($cObervers as $cOberver)
+                {
+                    if (method_exists($cOberver, "notify"))
+                    {
+                        $cOberver->notify($scope, $name, $oldValue, $value);
+                    }
                 }
+                array_pop($pathArray);
             }
+
+
         }
     }
 
@@ -127,7 +137,7 @@ final class Stock
         ArrayUtility::set($this->observers, $key, array_unique($observers));
     }
 
-    public function detachObserver ($name, $observer, $scope)
+    public function detachObserver($name, $observer, $scope)
     {
         $key = sha1($scope . static::separator . $name);
         $observers = ArrayUtility::get($this->observers, $key, []);
