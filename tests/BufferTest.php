@@ -6,6 +6,24 @@ declare(strict_types=1);
 use PHPallas\Buffer\Stock as Buffer;
 use PHPUnit\Framework\TestCase;
 
+class Observer 
+{
+    private $response = null;
+    public function getResponse()
+    {
+        return $this->response;
+    }
+    public function notify($scope, $name, $oldValue, $value)
+    {
+        $this -> response = [
+            "scope" => $scope,
+            "name" => $name,
+            "oldValue" => $oldValue,
+            "value" => $value,
+        ];
+    }
+}
+
 final class BufferTest extends TestCase
 {
     public function testIfBufferIsSingleton()
@@ -44,6 +62,55 @@ final class BufferTest extends TestCase
         $this->assertEquals(["name" => "John", "age" => 28], $buffer->get("morder", "fantacy"));
         $buffer->unset("morder.age","fantacy");
         $this->assertEquals(["name" => "John"], $buffer->get("morder", "fantacy"));
+    }
+
+    public function testObserver()
+    {
+        $buffer = Buffer::getInstance();
+        $buffer->set("morder.name", "John", "fantacy");
+        $observer = new Observer();
+        $buffer->attachObserver("morder.name", $observer, "fantacy");
+        $buffer->set("morder.name", "Paul", "fantacy");
+        $this->assertSame(
+            [
+                "scope" => "fantacy",
+                "name" => "morder.name",
+                "oldValue" => "John",
+                "value" => "Paul",
+            ],
+            $observer->getResponse()
+        );
+        $buffer->set("morder.name", "Susan", "fantacy");
+        $this->assertSame(
+            [
+                "scope" => "fantacy",
+                "name" => "morder.name",
+                "oldValue" => "Paul",
+                "value" => "Susan",
+            ],
+            $observer->getResponse()
+        );
+        $buffer->detachObserver("morder.name", $observer, "fantacy");
+        $buffer->set("morder.name", "Mary", "fantacy");
+        $this->assertSame(
+            [
+                "scope" => "fantacy",
+                "name" => "morder.name",
+                "oldValue" => "Paul",
+                "value" => "Susan",
+            ],
+            $observer->getResponse()
+        );
+        $buffer->set("morder.name", "Jessica", "fantacy");
+        $this->assertSame(
+            [
+                "scope" => "fantacy",
+                "name" => "morder.name",
+                "oldValue" => "Paul",
+                "value" => "Susan",
+            ],
+            $observer->getResponse()
+        );
     }
 
 }
