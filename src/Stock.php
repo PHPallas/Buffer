@@ -112,7 +112,9 @@ final class Stock
             $cObervers = ArrayUtility::get($observers, $key, []);
             foreach ($cObervers as $cOberver)
             {
-                $cOberver->notify($scope, $name, $oldValue, $value);
+                if (method_exists($cOberver, "notify")) {
+                    $cOberver->notify($scope, $name, $oldValue, $value);
+                }
             }
         }
     }
